@@ -10,3 +10,15 @@ export interface LoginResponse extends Omit<BaseResponse, "data"> {
         token: string;
     };
 }
+
+export interface KaryawanResponse extends Omit<BaseResponse, "data"> {
+    data: [
+        {
+            id: number;
+            nama: string;
+            gaji: number;
+            jabatan: string;
+            tanggal_masuk: Date;
+        }
+    ];
+}

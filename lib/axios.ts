@@ -8,12 +8,8 @@ api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("auth-token");
         if (token) {
-            const accessToken = JSON.parse(token);
-
-            if (accessToken) {
-                if (config.headers)
-                    config.headers.Authorization = "Bearer " + accessToken;
-            }
+            if (config.headers)
+                config.headers.Authorization = "Bearer " + token;
         }
 
         config.headers["Content-Type"] = "application/json";

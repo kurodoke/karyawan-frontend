@@ -42,11 +42,11 @@ export function useApiRequest<T>({
                     data: data,
                     ...config,
                 });
-
                 setResponseData(response.data);
                 if (fullfiledCallback) fullfiledCallback(response);
             } catch (err) {
                 const error = err as AxiosError;
+
                 setError(true);
                 if (!disableAutoNavigate)
                     if (error.response?.status === 401) {
@@ -58,7 +58,6 @@ export function useApiRequest<T>({
                 setLoading(false);
             }
         };
-
         fetchData();
     }, [method, url, data]);
     return { responseData, error, loading };

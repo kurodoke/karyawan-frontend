@@ -49,7 +49,10 @@ export function useApiRequest<T>({
 
                 setError(true);
                 if (!disableAutoNavigate)
-                    if (error.response?.status === 401) {
+                    if (
+                        error.response?.status === 401 ||
+                        error.response?.status === 403
+                    ) {
                         router.push("/login");
                     }
 

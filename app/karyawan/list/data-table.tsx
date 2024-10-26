@@ -38,7 +38,11 @@ import {
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
+import { KaryawanAlertDialog } from "@/components/karyawan-alert";
+import { SingleKaryawanResponse } from "@/types/api";
+import { useRouter } from "next/navigation";
+import { useApiRequest } from "@/hooks/use-api";
 
 interface DataTableProps<TData, TValue> {
     data: TData[];
@@ -56,6 +60,26 @@ export function DataTable<TData, TValue>({
         React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({});
+
+    const [idDelete, setIdDelete] = React.useState(0);
+
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+    const [isDelete, setIsDelete] = React.useState(false);
+
+    const router = useRouter();
+
+    const { responseData, loading } = useApiRequest<SingleKaryawanResponse>({
+        method: "delete",
+        url: isDelete ? `/karyawan/${idDelete}` : "",
+        data: data,
+        fullfiledCallback(res) {
+            if (res.status == 200 && res.config.method == "delete") {
+                setIsDelete(false);
+                router.refresh();
+                history.go(0);
+            }
+        },
+    });
 
     const columns: ColumnDef<TData>[] = [
         {
@@ -146,7 +170,10 @@ export function DataTable<TData, TValue>({
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="bg-primary focus:bg-primary focus:text-white text-white"
-                                onClick={() => {}}
+                                onClick={() => {
+                                    setIsDeleteDialogOpen(true);
+                                    setIdDelete(row.getValue("id"));
+                                }}
                             >
                                 Delete Data
                             </DropdownMenuItem>
@@ -293,6 +320,11 @@ export function DataTable<TData, TValue>({
                     </div>
                 </div>
             </div>
+            <KaryawanAlertDialog
+                open={isDeleteDialogOpen}
+                setOpen={setIsDeleteDialogOpen}
+                setConfirm={setIsDelete}
+            />
         </>
     );
 }

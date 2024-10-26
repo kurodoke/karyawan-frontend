@@ -33,6 +33,11 @@ export function useApiRequest<T>({
         if (!data && (method === "post" || method === "put")) {
             return;
         }
+
+        if (url == "") {
+            return;
+        }
+
         const fetchData = async () => {
             try {
                 setLoading(true);

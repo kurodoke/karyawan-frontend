@@ -21,22 +21,22 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 const menu = [
-    { title: "Dashboard", url: "/karyawan", icon: Home, sub: [] },
+    { title: "Dashboard", url: "/karyawan", icon: Home, sub: {} },
     {
         title: "Karyawan",
         url: "/karyawan/list",
         icon: User,
-        sub: [
-            { title: "Table List", url: "/karyawan/list" },
-            {
-                title: "Add Data",
-                url: "/karyawan/create",
-            },
-        ],
+        sub: {
+            title: "Add Data",
+        },
     },
 ];
 
-export default function KaryawanSideBar(): React.ReactElement {
+export default function KaryawanSideBar({
+    setDrawerOpen,
+}: {
+    setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}): React.ReactElement {
     const router = useRouter();
 
     function handleLogout(event: React.MouseEvent) {
@@ -68,29 +68,27 @@ export default function KaryawanSideBar(): React.ReactElement {
                                         </SidebarMenuItem>
                                         {index === 1 && (
                                             <SidebarMenuSub>
-                                                {item.sub.map((_item) => {
-                                                    return (
-                                                        <SidebarMenuSubItem
-                                                            key={_item.title}
+                                                <SidebarMenuSubItem
+                                                    key={item.sub.title}
+                                                >
+                                                    <SidebarMenuSubButton
+                                                        asChild
+                                                    >
+                                                        <Link
+                                                            href={"#"}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                setDrawerOpen(
+                                                                    true
+                                                                );
+                                                            }}
                                                         >
-                                                            <SidebarMenuSubButton
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={
-                                                                        _item.url
-                                                                    }
-                                                                >
-                                                                    <span className="ms-2">
-                                                                        {
-                                                                            _item.title
-                                                                        }
-                                                                    </span>
-                                                                </Link>
-                                                            </SidebarMenuSubButton>
-                                                        </SidebarMenuSubItem>
-                                                    );
-                                                })}
+                                                            <span className="ms-2">
+                                                                {item.sub.title}
+                                                            </span>
+                                                        </Link>
+                                                    </SidebarMenuSubButton>
+                                                </SidebarMenuSubItem>
                                             </SidebarMenuSub>
                                         )}
                                     </React.Fragment>

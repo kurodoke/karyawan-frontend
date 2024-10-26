@@ -16,3 +16,7 @@ export interface LoginResponse extends Omit<BaseResponse, "data"> {
 export interface KaryawanResponse extends Omit<BaseResponse, "data"> {
     data: [Karyawan];
 }
+
+export interface SingleKaryawanResponse extends Omit<BaseResponse, "data"> {
+    data: Karyawan;
+}

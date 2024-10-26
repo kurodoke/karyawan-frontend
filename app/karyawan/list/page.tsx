@@ -1,28 +1,19 @@
 "use client";
 
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardContent,
-} from "@/components/ui/card";
 import { useApiRequest } from "@/hooks/use-api";
 import { KaryawanResponse } from "@/types/api";
 import React from "react";
 import { DataTable } from "./data-table";
-import { columns } from "./columns";
+import KaryawanDrawer from "@/components/karyawan-drawer";
 
 export default function Page(): React.ReactElement {
-    const { responseData, error, loading } = useApiRequest<KaryawanResponse>({
+    const { responseData, loading } = useApiRequest<KaryawanResponse>({
         url: "/karyawan",
         method: "get",
     });
 
-    // const data = responseData?.data.map((item, index) => {
-    //     item.tanggal_masuk = new Date(item.tanggal_masuk).toDateString();
-    //     return item;
-    // });
+    const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+    const [idKaryawan, setIdKaryawan] = React.useState(0);
 
     return (
         <div className="flex flex-col gap-6">
@@ -37,7 +28,17 @@ export default function Page(): React.ReactElement {
 
             {responseData && (
                 <div>
-                    <DataTable columns={columns} data={responseData?.data} />
+                    <KaryawanDrawer
+                        open={isDrawerOpen}
+                        setOpen={setIsDrawerOpen}
+                        idKaryawan={idKaryawan}
+                        isUpdate
+                    />
+                    <DataTable
+                        data={responseData?.data}
+                        setIsDrawerOpen={setIsDrawerOpen}
+                        setIdKaryawan={setIdKaryawan}
+                    />
                 </div>
             )}
         </div>

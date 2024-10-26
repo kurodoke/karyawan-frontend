@@ -8,21 +8,14 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { useApiRequest } from "@/hooks/use-api";
-import { api } from "@/lib/axios";
 import { KaryawanResponse } from "@/types/api";
-import { AxiosError, AxiosResponse } from "axios";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export default function Page(): React.ReactElement {
-    const router = useRouter();
-
     const { responseData, error, loading } = useApiRequest<KaryawanResponse>({
         url: "/karyawan",
         method: "get",
     });
-
-    console.log(responseData);
 
     return (
         <div className="flex flex-col gap-6">
